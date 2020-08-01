@@ -2,6 +2,9 @@ package com.challenage.domain;
 
 public class ListNodeBuilder {
 
+    private ListNodeBuilder() {
+    }
+
     public static ListNode createListNodeAndGetFirstNode(int[] nums) {
         ListNode firstNode =null,currentNode=null;
         for (int num : nums) {
