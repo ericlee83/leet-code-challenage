@@ -1,7 +1,5 @@
 package com.challenage.domain.Node;
 
-import lombok.Data;
-
 public class Node<T extends Comparable<T>> {
     private T data;
     private Node<T> nextNode;

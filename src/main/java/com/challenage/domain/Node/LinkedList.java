@@ -1,7 +1,5 @@
 package com.challenage.domain.Node;
 
-import lombok.Data;
-
 public class LinkedList<T extends Comparable<T>> implements List<T>{
 
     private Node<T> root;
