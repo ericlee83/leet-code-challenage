@@ -1,7 +1,7 @@
 package com.challenage.domain;
 
-public class ListNode {
-    public int val;
-    public ListNode next;
-    public ListNode(int x) { val = x; }
+public class ListNode<T extends Comparable<T>> {
+    public T val;
+    public ListNode<T> next;
+    public ListNode(T x) { val = x; }
 }

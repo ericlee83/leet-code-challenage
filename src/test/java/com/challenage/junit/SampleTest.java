@@ -1,8 +1,10 @@
 package com.challenage.junit;
 
 import com.util.aggregator.PersonAggregator;
+import com.util.annotation.variablesource.VariableSource;
 import com.util.converter.SlashyDateConverter;
 import com.util.provider.BlankStringsArgumentsProvider;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
 import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
@@ -160,8 +162,8 @@ public class SampleTest {
             Arguments.of("not blank", false)
     );
 
-    //@ParameterizedTest
-    //@VariableSource("arguments")
+    @ParameterizedTest
+    @VariableSource("arguments")
     void isBlank_ShouldReturnTrueForNullOrBlankStringsVariableSource(
             String input, boolean expected) {
         assertEquals(expected, StringsTest.isBlank(input));

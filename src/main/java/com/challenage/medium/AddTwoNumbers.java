@@ -3,7 +3,7 @@ package com.challenage.medium;
 import com.challenage.domain.ListNode;
 
 public class AddTwoNumbers {
-    public ListNode solution(ListNode l1, ListNode l2) {
+    public ListNode solution(ListNode<Integer> l1, ListNode<Integer> l2) {
         int total=0;
         int count = 1;
         ListNode firstNode = null;
