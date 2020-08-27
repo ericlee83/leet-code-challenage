@@ -8,12 +8,13 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class NumberMinMaxAvg {
     private static DecimalFormat df = new DecimalFormat("#.##");
+
+
     public void solution(){
         try(InputStream inputStream = getClass().getClassLoader().getResourceAsStream("input.txt")){
             Scanner sc = new Scanner(inputStream, "UTF-8");
@@ -42,7 +43,6 @@ public class NumberMinMaxAvg {
         String[] info = line.split(";");
         return String.format("%s,%s",info[0],parseLine(info[1]));
     }
-
 
     public String parseLine(String line){
         double avg = 0.00;
