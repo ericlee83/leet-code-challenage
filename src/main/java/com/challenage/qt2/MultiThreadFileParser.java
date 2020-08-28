@@ -1,10 +1,12 @@
 package com.challenage.qt2;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 public class MultiThreadFileParser {
-    private static final String OUTPUT_PATH = String.format("%s%s%s", System.getProperty("user.dir"), System.getProperty("file.separator"), "output.txt");
+    private static final String OUTPUT_PATH = String.format("%s%s%s", System.getProperty("user.dir"), System.getProperty("file.separator"), "output.csv");
     private static final String INPUT_PATH = MultiThreadFileParser.class.getClassLoader().getResource("input.txt").getPath();
 
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
@@ -23,8 +25,8 @@ public class MultiThreadFileParser {
         writer.close();
 
         ExecutorService ex = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() +1);
-        CompletionService<String> completionService = new ExecutorCompletionService<String>(ex);
-
+        CompletionService<Long> completionService = new ExecutorCompletionService<>(ex);
+        List<Future> futures = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(INPUT_PATH));
              BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(OUTPUT_PATH, true))) {
             String line;
@@ -32,13 +34,15 @@ public class MultiThreadFileParser {
             while ((line = bufferedReader.readLine()) != null) {
                 final String _line = line;
                 final int _index = index;
-                completionService.submit(() -> {
+                futures.add(completionService.submit(() -> {
+                    long start = System.currentTimeMillis();
                     String result = String.format("%d,%s%s", _index, ParserUtil.parseLine(_line), System.lineSeparator());
                     bufferedWriter.write(result);
-                    return result;
-                });
+                    return System.currentTimeMillis() - start;
+                }));
                 index++;
             }
+            TimeUnit.MILLISECONDS.sleep(5);
         }
         ex.shutdown();
     }
