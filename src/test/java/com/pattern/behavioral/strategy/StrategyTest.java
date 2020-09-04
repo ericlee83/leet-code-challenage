@@ -39,7 +39,7 @@ class StrategyTest {
         final Function<BigDecimal,BigDecimal> comDiscounters = UnaryDiscounter.christmas().andThen(birthDay());
         BigDecimal value2 = comDiscounters.apply(amount);
 
-        assertEquals(BigDecimal.valueOf(35).stripTrailingZeros(),value.stripTrailingZeros());
+        assertEquals(BigDecimal.valueOf(35),value.stripTrailingZeros());
         assertEquals(BigDecimal.valueOf(35).stripTrailingZeros(),value2.stripTrailingZeros());
     }
 }
