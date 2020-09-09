@@ -2,11 +2,16 @@ package com.java8;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.java8.stream.BlogPost;
+import com.java8.stream.BlogPostType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -86,4 +91,43 @@ public class StreamCollectionTest {
         assertEquals(result.get(0),2);
         assertEquals(result.get(1),42);
     }
+
+    @Test
+    void compareIntTest(){
+        List<BlogPost> posts = Arrays.asList( new BlogPost("java","Erich", BlogPostType.GUIDE,100),
+                new BlogPost("sql","Erich", BlogPostType.NEWS,101),
+                new BlogPost("spring","Erich", BlogPostType.GUIDE,102));
+        Map<BlogPostType, Optional<BlogPost>> maxLikesPerPostType = posts.stream()
+                .collect(groupingBy(BlogPost::getType,
+                        maxBy(comparingInt(BlogPost::getLikes))));
+        assertEquals(maxLikesPerPostType.get(BlogPostType.GUIDE).map(BlogPost::getLikes).orElse(0),102);
+    }
+
+    @Test
+    void modifyReturnMap(){
+        List<BlogPost> posts = Arrays.asList( new BlogPost("java","Erich", BlogPostType.GUIDE,100),
+                new BlogPost("sql","Erich", BlogPostType.NEWS,101),
+                new BlogPost("spring","Erich", BlogPostType.GUIDE,102));
+        EnumMap<BlogPostType,List<BlogPost>> result = posts.stream().collect(groupingBy(BlogPost::getType,
+                ()-> new EnumMap<>(BlogPostType.class),
+                toList()));
+    }
+
+    @Test
+    void filterOutEmpty(){
+        List<Optional<String>> listOfOptionals = Arrays.asList(
+                Optional.empty(), Optional.of("foo"), Optional.empty(), Optional.of("bar"));
+
+        List<String> filteredList = listOfOptionals.stream()
+                .flatMap(o -> o.map(Stream::of).orElseGet(Stream::empty))
+                .collect(Collectors.toList());
+
+        List<String> filteredListJava9 = listOfOptionals.stream()
+                .flatMap(Optional::stream)
+                .collect(Collectors.toList());
+        assertEquals(2,filteredList.size());
+        assertEquals(2,filteredListJava9.size());
+    }
+
+
 }
