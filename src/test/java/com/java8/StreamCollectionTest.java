@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.java8.stream.BlogPost;
 import com.java8.stream.BlogPostType;
+import com.java8.stream.FunctionUtils;
+import com.java8.stream.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -128,6 +130,18 @@ public class StreamCollectionTest {
         assertEquals(2,filteredList.size());
         assertEquals(2,filteredListJava9.size());
     }
+
+    @Test
+    void DistinctTest(){
+        List<Person> personList = Stream.of(new Person(36,"Erich","Lam@Lam.com"),
+                new Person(36,"Eric","am@Lam.com"),new Person(36,"Erich","m@Lam.com")).collect(toList());
+        List<Person> personListFiltered = personList.stream()
+                .filter(FunctionUtils.distinctByKey(p -> p.getName()))
+                .collect(Collectors.toList());
+        assertEquals(2, personListFiltered.size());
+    }
+
+
 
 
 }
